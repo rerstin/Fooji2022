@@ -65,5 +65,5 @@ def sign_up():
 
     return render_template("sign_up.html", user=current_user)
 
-@auth.route('/sign-up', methods=['GET', 'POST'])
-def sign_up():
+# @auth.route('/sign-up', methods=['GET', 'POST'])
+# def sign_up():

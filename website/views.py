@@ -35,3 +35,12 @@ def delete_note():
             db.session.commit()
 
     return jsonify({})
+
+
+@views.route('/orders_you_created', methods=['GET'])
+def orders_you_created():
+    return render_template("orders_you_created.html", user=current_user)
+
+@views.route('/orders_you_joined', methods=['GET'])
+def orders_you_joined():
+    return render_template("orders_you_joined.html", user=current_user)
