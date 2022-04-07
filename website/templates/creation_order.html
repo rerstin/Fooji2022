@@ -8,16 +8,32 @@
     <title>Document</title>
 </head>
 <body>
-    Choose a Restaurant<SELECT name="Restaurant">
-        {% for rest in rest_list %}
-            <OPTION value={{rest}}>{{rest_list[rest]}}</option>
-        {% endfor %}
-    </SELECT>
-    <!-- <form method="POST" action="/">
-        Checkbox 1<input type="checkbox" value="1" name="mycheckbox">
-        Checkbox 2<input type="checkbox" value="2" name="mycheckbox">
-        Checkbox 3<input type="checkbox" value="3" name="mycheckbox">
-        <input type="submit">
-    </form> -->
+    <form method="POST">
+        <div class="input-group">
+            Choose a Restaurant<SELECT name="rest_choice">
+            {% for rest in rest_list %}
+                <OPTION value={{rest}}>{{rest_list[rest]}}</option>
+            {% endfor %}
+        </SELECT>
+            {% for pay_m in methods_list %}
+                {{methods_list[pay_m]}}<input type="checkbox" value={{pay_m}} name="mycheckbox">
+            {% endfor %}
+        <label for="time">Time of order</label>
+            <input
+              type="time"
+              name="order_time"
+            />   
+        <label>Commission</label>
+            <input
+              name="commission"
+            />  
+        <label>Max Number of Participants</label>
+            <input
+              name="participants_max_num"
+            />  
+               
+        <button type="submit" class="btn btn-default">Go</button>
+        </div>
+    </form>
 </body>
 </html>
