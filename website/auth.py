@@ -1,3 +1,4 @@
+from curses import def_prog_mode
 import email
 from hashlib import new
 from operator import ne
@@ -5,16 +6,23 @@ from time import time
 from unicodedata import name
 from xml.sax.handler import feature_validation
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User, Restaurant, HostOrder, PaymentMethod
+from .models import User, Restaurant, HostOrder, PaymentMethod, ParticipantOrder
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
 import sqlite3 as sql
+import random 
+from os import path
 auth = Blueprint('auth', __name__)
+
 
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    user = User.query.filter_by().first()
+    if not user:
+        print('update')
+        populate_database()
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -47,7 +55,6 @@ def sign_up():
         first_name = request.form.get('fullName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
-
         user = User.query.filter_by(email=email).first()
         if user:
             flash('Email already exists.', category='error')
@@ -67,35 +74,84 @@ def sign_up():
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
             return redirect(url_for('views.home'))
-
     return render_template("sign_up.html", user=current_user)
 
 
-restaurants_list = {'1': 'Menza', '2': 'Papa Jhons'}
-payment_methods = {'1': 'Bit', '2': 'Cashe', '3': 'PayBox', '4': 'ApplePay'}
+times = ['12:00', '14:15', '13:56', '04:12', '10:15']
 
 
-# def fill_rest():
-#     # con = sql.connect('shot_database.db')
-#     # # Getting cursor
-#     # c =  con.cursor() 
-#     for elem in restaurants_list:
-#         new_rest = Restaurant(restaurant_name = elem)
-#         rest = Restaurant.query.filter_by(restaurant_name = elem).first()
-#         if not rest:
-#             db.session.add(new_rest)
-#         #print(new_rest.restaurant_name)
-#             db.session.commit()  
+restaurants_list = {'1': 'Menza',
+                    '2': 'Papa Jhons', 
+                    '3': 'Moti Sushi',
+                    '4': 'Sufersal',
+                    '5': 'Rami Levi',
+                    '6': 'Macdonalds',
+                    '7': 'Jahnun Afula'}
 
-# def create_default_user():
-#     default_user = User.query.first()
-#     if not default_user:
-#         user = User()
+payment_methods = {'1': 'Bit',
+                   '2': 'Cashe', 
+                   '3': 'PayBox', 
+                   '4': 'ApplePay', 
+                   '5': 'Bitcoin', 
+                   '6': 'Dogecoin'}
+
+def_all = {'0': 'All'}
+
+def populate_users():
+    names = ['Kostya', 'Yonatan', 'Shaked', 'Daniel', 'Michael']
+    email_str = '@mail.huji.ac.il'
+    passwords = names
+    for name in names:
+        new_user = User(first_name = name, 
+                            password = name, 
+                            email = name + email_str)
+        db.session.add(new_user)
+    db.session.commit()
+
+
+def create_def_order(user):
+    rand_rest = random.randint(1, len(restaurants_list))
+    rand_time = random.randint(1, len(times))
+    rand_num = random.randint(1, 100)
+    rand_com = random.randint(1, 10)
+    new_order = HostOrder(id_host_user = user.id, 
+                          rest_name = restaurants_list[str(rand_rest)], 
+                          time = times[rand_time],
+                          commission = rand_com,
+                          max_ppl_num = rand_num)
+    db.session.add(new_order)
+    populate_partOrders(new_order, user)
+
+
+def populate_partOrders(hostOrder, user):
+    participant = User.query.filter(id != user.id).first()
+    rand_method = random.randint(1, len(payment_methods))
+    rand_price = random.randint(1, 100)
+    new_order = ParticipantOrder(id_host_order = hostOrder.id_host_order, 
+                                 participant_id = participant.id,
+                                 payment_in = payment_methods[str(rand_method)], 
+                                 price = rand_price,
+                                 Description = "Some description...", 
+                                 IsAccepted = bool(random.randint(0,1)))
+    db.session.add(new_order)
+
+
+def populate_HostOrders():
+    users = User.query.filter_by()
+    for user in users:
+        #print(user.first_name)
+        create_def_order(user)
+
+
+def populate_database():
+    populate_users()
+    populate_HostOrders()
+    db.session.commit()
+    print('database udated succesfully')
 
 
 @auth.route('/create-order', methods=['GET', 'POST'])
 def create_order():
-    #payment_methods=db.execute("SELECT * FROM Payment_Methods order by pay_method")
     if request.method == 'POST':
         accepted_methods = request.form.getlist('mycheckbox')    
         restaurant = request.form.get('rest_choice')
@@ -115,28 +171,22 @@ def create_order():
         elif int(commission) < 0:
             flash('Choose wonder commission.', category='error')
         else:
-            #current_user = create_default_user()
-            new_order = HostOrder(id_host_user = 1000, 
+            new_order = HostOrder(id_host_user = 100, 
                                   rest_name = restaurants_list[restaurant],
                                   time = order_time,
+                                  commission = commission,
                                   max_ppl_num = part_num)
             db.session.add(new_order)                      
             for elem in accepted_methods:
                 order_pay = PaymentMethod(pay_method = payment_methods[elem], 
                 id_order = new_order.id_host_order)
                 db.session.add(order_pay)
-                #db.session.commit() 
-
             db.session.commit()  
-            print('success')
-        # print(accepted_methods)
-        # print(restaurant)
-        # print(len(commission))
-        # print(part_num)
-        # print(order_time)
-        # print('methods:')
-        # for x in accepted_methods:
-        #     print(payment_methods[int(x)])
-        # print('restaurant')
-        # print(restaurants_list[int(restaurant)])
-    return render_template("creation_order.html",rest_list=restaurants_list, methods_list=payment_methods ) 
+            print(type(order_time))
+    return render_template("creation_order.html",rest_list=restaurants_list, methods_list=payment_methods) 
+
+
+# @auth.route('/join_order', methods=['GET', 'POST'])
+# def join_order():
+    
+ 
