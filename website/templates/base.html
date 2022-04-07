@@ -1,3 +1,4 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/base.css') }}">
 <!DOCTYPE html>
 <html>
   <head>
@@ -14,7 +15,6 @@
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       crossorigin="anonymous"
     />
-
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
@@ -39,6 +39,12 @@
         </div>
       </div>
     </nav>
+
+    <div align="center">
+      <img src="/static/styles/logo.jpg" alt="main-logo" width="25%">
+    </div>
+
+    <div class="bottom-bar"></div>
 
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==

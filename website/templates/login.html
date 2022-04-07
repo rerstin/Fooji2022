@@ -1,7 +1,8 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/base.css') }}">
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
 %}
+<p class="title">LOGIN</p>
 <form method="POST">
-  <h3 align="center">Login</h3>
   <div class="form-group">
     <label for="email">Email Address</label>
     <input
@@ -23,6 +24,7 @@
     />
   </div>
   <br />
-  <button type="submit" class="btn btn-primary">Login</button>
+  <button type="submit" class="btn btn-primary"
+          style="font-family:candara light;font-weight:800;font-size:20px;background-color:#00D748; border-color:#00D748; width: 20%;margin-left : 40%;">LOGIN</button>
 </form>
 {% endblock %}
