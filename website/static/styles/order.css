@@ -1,0 +1,149 @@
+.order-bar {
+    width:90%;
+    height:70%;
+    border:1px solid #434343;
+    background-color:#434343;
+    position:fixed;bottom:4.5%;left:0;
+    margin-left: 5%;
+    border-radius: 70px 70px 0 0;
+}
+
+.data {
+    border:1px solid white;
+    background-color: white;
+    border-radius: 15px;
+    flex: 1;
+}
+
+.subtitle {
+    font-family:candara;
+    font-size: 250%;
+    text-align: center;
+    color: white;
+    width: 94%;
+    margin-top: 2%;
+    margin-left: 3%;
+    border-top: 5px solid white;
+    border-bottom: 5px solid white;
+}
+
+.data-title {
+    font-family:candara;
+    font-size: 180%;
+    text-align: center;
+    color: #434343;
+    width: 94%;
+    margin-left: 3%;
+    border-bottom: 5px solid #434343;
+    font-weight: bold;
+}
+
+.select-container {
+    border: 2px solid #434343;
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-top: 4%;
+    padding-top: 1.5%;
+    padding-bottom: 1.5%;
+    border-radius: 10px
+}
+
+select {
+    min-width:90%;
+    min-height:30%;
+    border: 2px solid #434343;
+    margin-left: 30%;
+    margin-right: 3%;
+    margin-top: 4%;
+    padding-top: 1.5%;
+    padding-bottom: 1.5%;
+    padding-left: 3%;
+    border-radius: 10px;
+    font-size: 130%;
+}
+
+input[type=time] {
+  min-width:90%;
+  min-height:30%;
+  border: 2px solid #434343;
+  font-size: 150%;
+  font-family: helvetica;
+  width: 180px;
+  border-radius: 10px;
+}
+
+.info {
+    width:94%;
+    height:74%;
+    border:1px solid white;
+    background-color: white;
+    margin-top: 2%;
+    margin-left: 3%;
+    border-radius: 20px;
+}
+
+.red-title {
+    font-family:candara;
+    font-size: 200%;
+    text-align: center;
+    color: #FF3D57;
+    width: 94%;
+    margin-top: 1%;
+    margin-left: 3%;
+    border-top: 5px solid white;
+    border-bottom: 5px solid white;
+}
+
+table {
+    height: 70%;
+    width: 160%;
+}
+
+form {
+  position:fixed;bottom:0;left:-15%;
+  height: 60%
+}
+
+.chart {
+  display: flex;
+  width: 94%;
+  height: 70%;
+  justify-content: center;
+  margin-top: 2%;
+  margin-left: 3%;
+  gap: 25px;
+}
+
+.from-where-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1.5;
+  gap: 30px;
+}
+
+.commission-people-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 22px;
+}
+
+.payment {
+  flex: 1;
+}
+
+.checkboxes {
+    display:flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+input["text"] {
+    border:3px solid #434343;
+    width: 200px;
+    flex: 1;
+}
+
+.btn.btn-default {
+
+}

@@ -1,0 +1,45 @@
+tr {
+    font-family: candara light;
+    font-size: 110%;
+    background-color: white;
+    border-top: 2px solid #434343;
+    border-right: 2px solid #434343;
+    text-align: center;
+    table-layout: auto;
+}
+
+table {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#table-wrapper {
+  position:relative;
+  width: 90%;
+  margin-left: 5%;
+  height: 70%;
+}
+
+#table-scroll {
+  height:100%;
+  width:100%;
+  overflow:auto;
+  margin-top:20px;
+}
+#table-wrapper table {
+  width:100%;
+
+}
+#table-wrapper table * {
+  background:white;
+  color:black;
+  width:90%;
+}
+
+#table-wrapper table thead th .text {
+  display: flex;
+  align: center;
+  justify-content: center;
+  position:absolute;
+}

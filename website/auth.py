@@ -26,9 +26,9 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-
         user = User.query.filter_by(email=email).first()
         if user:
+            print("a")
             if check_password_hash(user.password, password):
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
@@ -50,6 +50,10 @@ def logout():
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
+    user = User.query.filter_by().first()
+    if not user:
+        print('update')
+        populate_database()
     if request.method == 'POST':
         email = request.form.get('email')
         first_name = request.form.get('fullName')
@@ -103,15 +107,15 @@ def populate_users():
     passwords = names
     for name in names:
         new_user = User(first_name = name, 
-                            password = name, 
-                            email = name + email_str)
+                        password = generate_password_hash(name, method='sha256'), 
+                        email = name + email_str)
         db.session.add(new_user)
     db.session.commit()
 
 
 def create_def_order(user):
-    rand_rest = random.randint(1, len(restaurants_list))
-    rand_time = random.randint(1, len(times))
+    rand_rest = random.randint(1, len(restaurants_list) - 1)
+    rand_time = random.randint(0, len(times) - 1)
     rand_num = random.randint(1, 100)
     rand_com = random.randint(1, 10)
     new_order = HostOrder(id_host_user = user.id, 
@@ -125,7 +129,7 @@ def create_def_order(user):
 
 def populate_partOrders(hostOrder, user):
     participant = User.query.filter(id != user.id).first()
-    rand_method = random.randint(1, len(payment_methods))
+    rand_method = random.randint(1, len(payment_methods) - 1)
     rand_price = random.randint(1, 100)
     new_order = ParticipantOrder(id_host_order = hostOrder.id_host_order, 
                                  participant_id = participant.id,
@@ -139,7 +143,6 @@ def populate_partOrders(hostOrder, user):
 def populate_HostOrders():
     users = User.query.filter_by()
     for user in users:
-        #print(user.first_name)
         create_def_order(user)
 
 
@@ -150,7 +153,7 @@ def populate_database():
     print('database udated succesfully')
 
 
-@auth.route('/create-order', methods=['GET', 'POST'])
+@auth.route('/create_order', methods=['GET', 'POST'])
 def create_order():
     if request.method == 'POST':
         accepted_methods = request.form.getlist('mycheckbox')    
@@ -183,7 +186,7 @@ def create_order():
                 db.session.add(order_pay)
             db.session.commit()  
             print(type(order_time))
-    return render_template("creation_order.html",rest_list=restaurants_list, methods_list=payment_methods) 
+    return render_template("create_order.html",rest_list=restaurants_list, methods_list=payment_methods, user=current_user) 
 
 
 # @auth.route('/join_order', methods=['GET', 'POST'])
